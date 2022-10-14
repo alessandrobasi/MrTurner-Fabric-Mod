@@ -8,24 +8,15 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 public class MrturnerClient implements ClientModInitializer {
 
-    private ConfigManager configManager = new ConfigManager();
-
-    private static MrturnerClient instance;
+    private final ConfigManager configManager = new ConfigManager();
 
     public MrturnerClient() {
-        instance = this;
-    }
-
-    public static MrturnerClient getInstance() {
-        return instance;
+        // noting to initialize
     }
 
     @Override
     public void onInitializeClient() {
-
+        // noting to initialize
     }
 
-    public ConfigManager getConfigManager() {
-        return configManager;
-    }
 }

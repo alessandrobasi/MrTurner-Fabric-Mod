@@ -1,7 +1,6 @@
 package it.alessandrobasi.mrturner.mixin;
 
 import com.mojang.brigadier.ParseResults;
-import it.alessandrobasi.mrturner.client.MrturnerClient;
 import it.alessandrobasi.mrturner.config.ConfigManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -25,7 +24,7 @@ import java.util.List;
 @Mixin(ClientPlayerEntity.class)
 public abstract class MixinSendCommand {
 
-    private static String MSG = "{player} rispetto la tua {condizione} e per questo non {azione}, " +
+    private static final String MSG = "{player} rispetto la tua {condizione} e per questo non {azione}, " +
             "ma facendo valere la mia autorità da Staffer, {azione} lo stesso";
 
     private boolean sendTroll(String player, String azione, String condizione) {
@@ -86,6 +85,9 @@ public abstract class MixinSendCommand {
             )
     public void onCommandSend(String command, CallbackInfoReturnable<Boolean> cir, LastSeenMessageList.Acknowledgment acknowledgment) {
 
+        if(!ConfigManager.getConfig().isEnable())
+            return;
+
         if(!checkCommand(command))
             return;
 
@@ -99,6 +101,7 @@ public abstract class MixinSendCommand {
                 MinecraftClient.getInstance().player.networkHandler.sendPacket(new CommandExecutionC2SPacket(command, Instant.now(), 0L, ArgumentSignatureDataMap.EMPTY, false, acknowledgment));
             } catch (Exception e) {
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
 
         })).start();
@@ -115,7 +118,7 @@ public abstract class MixinSendCommand {
             )
     )
     public void onCommandSendInternal(
-            String command, Text preview, CallbackInfo ci, ParseResults parseResults, MessageMetadata messageMetadata, LastSeenMessageList.Acknowledgment acknowledgment) {
+            String command, Text preview, CallbackInfo ci, ParseResults<CommandSource> parseResults, MessageMetadata messageMetadata, LastSeenMessageList.Acknowledgment acknowledgment) {
 
         if(!checkCommand(command))
             return;
@@ -132,6 +135,7 @@ public abstract class MixinSendCommand {
                 );
             } catch (Exception e) {
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
 
         })).start();
