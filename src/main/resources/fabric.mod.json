@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "mrturner",
+  "version": "${version}",
+  "name": "MrTurner",
+  "description": "Mr. Turner famosa frase",
+  "authors": [
+    "alessandrobasi"
+  ],
+  "contact": {
+    "website": "alessandrobasi.it"
+  },
+  "license": "MIT",
+  "icon": "assets/mrturner/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "it.alessandrobasi.mrturner.client.MrturnerClient"
+    ],
+    "main": [
+      "it.alessandrobasi.mrturner.Mrturner"
+    ],
+    "modmenu": [
+      "it.alessandrobasi.mrturner.config.MenuInteg"
+    ]
+  },
+  "mixins": [
+    "mrturner.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.19.2",
+    "cloth-config2": ">=8.0"
+  }
+}
